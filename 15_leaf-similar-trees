@@ -1,0 +1,65 @@
+// https://leetcode.com/problems/leaf-similar-trees/description/
+
+class Solution {
+public:
+    vector<int> res1 ,  res2 ;
+
+    vector<int> f(TreeNode* node)
+    {
+        if(node == NULL)
+        {
+            return {} ;
+        }
+        if(node->left == NULL && node->right == NULL)
+        {
+            res1.push_back(node->val) ;
+        }
+        f(node->left) ;
+        f(node->right) ;
+
+        return res1 ;
+    }
+
+    vector<int> F(TreeNode* node)
+    {
+        if(node == NULL)
+        {
+            return {} ;
+        }
+        if(node->left == NULL && node->right == NULL)
+        {
+            res2.push_back(node->val) ;
+        }
+        F(node->left) ;
+        F(node->right) ;
+
+        return res2 ;
+    }
+    bool leafSimilar(TreeNode* root1, TreeNode* root2) {
+
+        f(root1) ;
+
+        F(root2) ;
+
+        int i = 0 ; int j = 0 ;
+
+        if(res1.size() != res2.size())
+        {
+            return false ;
+        }
+
+        while(i < res1.size() && j < res2.size())
+        {
+            if(res1[i] != res2[j])
+            {
+                return false ;
+            }
+            else
+            {
+                i++ ;
+                j++ ;
+            }
+        }
+        return true ;
+    }
+};
