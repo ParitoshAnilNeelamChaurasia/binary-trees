@@ -1,0 +1,60 @@
+// https://leetcode.com/problems/maximum-product-of-splitted-binary-tree/
+
+class Solution {
+public:
+    long sum_tot = 0;
+    long max_prod = 0 ;
+
+
+    int tot_sum(TreeNode* root)
+    {
+        if(root == NULL)
+        {
+            return 0 ;
+        }
+
+        int sum = 0 ;
+
+        sum += tot_sum(root->left) ;
+        sum += tot_sum(root->right) ;
+
+        sum += root->val ;
+
+        return sum ;
+    }
+
+    int find(TreeNode* root)
+    {
+        if(root == NULL)
+        {
+            return 0;
+        }
+
+        int left_sum = find(root->left) ;
+        int right_sum = find(root->right) ;
+
+        long subtreesum = root->val + left_sum + right_sum ;
+
+        long remain_subtree_sum = sum_tot - subtreesum ;
+
+        max_prod = max(max_prod , subtreesum * remain_subtree_sum) ;
+
+        return subtreesum ;
+    }
+    int maxProduct(TreeNode* root) {
+
+        if(root == NULL)
+        {
+            return 0 ;
+        }
+        sum_tot = tot_sum(root) ;
+
+        max_prod = 0 ;
+
+        find(root) ;
+
+        return max_prod % 1000000007 ;
+
+
+    }
+};
